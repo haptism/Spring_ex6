@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FileMapper">
+	<!-- <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT notice_seq.nextVal as id from dual
+   		 </selectKey> -->
+
+	<insert id="setWrite" parameterType="java.util.Map" >
+		<selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            SELECT notice_seq.nextVal as id from dual
+   		</selectKey>
+		 
+		Insert All  
+		<foreach collection="list" item="item" separator=" " index="i">
+				into FILES <!-- (fnum, num, fname, oname) -->
+				values (notice_seq.nextval+#{i}, #{item.num}, #{item.fname},#{item.oname})
+		</foreach>
+		select * from dual
+	</insert>
+	
+	<update id="setUpdate" parameterType="com.iu.file.FileDTO">
+		update files set fname=#{fname}, oname=#{oname} where fnum=#{fnum}
+	</update>
+	
+	<delete id="setDelete" parameterType="java.lang.Integer">
+		delete files where fnum=#{fnum}
+	</delete>
+	
+	<select id="getSelect" resultType="com.iu.file.FileDTO" parameterType="java.lang.Integer">
+		select * from files where fnum=#{fnum}
+	</select>
+	
+	<select id="getList" resultType="com.iu.file.FileDTO" parameterType="java.lang.Integer">
+		select * from files where num=#{num}
+	</select>
+	
+	
+	
+		
+</mapper>
